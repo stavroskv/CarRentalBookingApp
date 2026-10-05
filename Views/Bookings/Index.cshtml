@@ -1,0 +1,58 @@
+@model IEnumerable<CarRentalBookingApp.Models.Booking>
+
+@{
+    ViewBag.Title = "Bookings";
+}
+
+<h2 class="mb-4">Bookings</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Car</th>
+                <th>Pickup</th>
+                <th>Return</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Customer.FirstName @item.Customer.LastName</td>
+                    <td>@item.Car.Make @item.Car.Model</td>
+                    <td>@item.PickupDate.ToShortDateString()</td>
+                    <td>@item.ReturnDate.ToShortDateString()</td>
+                    <td>$@item.TotalPrice</td>
+                    <td>
+                        @if (item.Status == "Confirmed")
+                        {
+                            <span class="badge bg-success">@item.Status</span>
+                        }
+                        else if (item.Status == "Cancelled")
+                        {
+                            <span class="badge bg-danger">@item.Status</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">@item.Status</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-primary me-2" })
+
+                        @using (Html.BeginForm("Cancel", "Bookings", new { id = item.Id }, FormMethod.Post, new { style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Cancel this booking?');">Cancel</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

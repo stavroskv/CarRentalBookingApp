@@ -1,0 +1,52 @@
+@model IEnumerable<CarRentalBookingApp.Models.Car>
+
+@{
+    ViewBag.Title = "Cars";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Cars</h2>
+    @Html.ActionLink("Create New Car", "Create", null, new { @class = "btn btn-primary" })
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Daily Rate</th>
+                <th>Seats</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Make</td>
+                    <td>@item.Model</td>
+                    <td>@item.Year</td>
+                    <td>$@item.DailyRate</td>
+                    <td>@item.Seats</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Unavailable</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-primary me-2" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('Are you sure?');" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

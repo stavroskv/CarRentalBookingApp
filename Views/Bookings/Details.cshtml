@@ -1,0 +1,34 @@
+@model CarRentalBookingApp.Models.Booking
+
+@{
+    ViewBag.Title = "Booking Details";
+}
+
+<h2>Booking Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Customer:</strong> @Model.Customer.FirstName @Model.Customer.LastName</p>
+                <p><strong>Email:</strong> @Model.Customer.Email</p>
+                <p><strong>Phone:</strong> @Model.Customer.Phone</p>
+                <p><strong>Car:</strong> @Model.Car.Make @Model.Car.Model</p>
+            </div>
+
+            <div class="col-md-6">
+                <p><strong>Pickup Date:</strong> @Model.PickupDate.ToShortDateString()</p>
+                <p><strong>Return Date:</strong> @Model.ReturnDate.ToShortDateString()</p>
+                <p><strong>Pickup Location:</strong> @Model.PickupLocation</p>
+                <p><strong>Return Location:</strong> @Model.ReturnLocation</p>
+                <p><strong>Total Price:</strong> $@Model.TotalPrice</p>
+                <p><strong>Status:</strong> @Model.Status</p>
+                <p><strong>Notes:</strong> @Model.Notes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    @Html.ActionLink("Back to List", "Index", "Bookings", null, new { @class = "btn btn-primary" })
+</div>

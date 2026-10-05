@@ -1,0 +1,168 @@
+@model CarRentalBookingApp.Models.BookingViewModel
+
+@{
+    ViewBag.Title = "Book a Car";
+}
+
+<section class="hero-section">
+    <div class="container">
+        <h1>Rent the perfect car for your trip</h1>
+        <p>Book premium vehicles with fast checkout and flexible dates.</p>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <h2 class="mb-4">Available cars</h2>
+
+        @if (Model.Cars != null && Model.Cars.Any())
+        {
+            foreach (var car in Model.Cars)
+            {
+                <div class="card car-card mb-4">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <div class="car-image-container">
+                                <span class="car-badge">$@car.DailyRate/day</span>
+                                <img src="@car.ImageUrl" alt="@car.Make @car.Model" />
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
+                                <p class="text-muted">@car.Description</p>
+
+                                <div class="car-specs">
+                                    <div class="spec-item">
+                                        <strong>Transmission</strong>
+                                        @car.Transmission
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Fuel</strong>
+                                        @car.FuelType
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Seats</strong>
+                                        @car.Seats
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Type</strong>
+                                        @car.Make
+                                    </div>
+                                </div>
+
+                                <div class="car-price">$@car.DailyRate <small class="text-muted">/ day</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">No cars are currently available.</div>
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <div class="booking-form">
+            <h3>Book your ride</h3>
+
+            @using (Html.BeginForm("CreateBooking", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CarId, new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.CarId,
+                        new SelectList(Model.Cars, "Id", "Model"),
+                        "-- Select car --",
+                        new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.CarId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LastName, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LicenseNumber, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.LicenseNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LicenseNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PickupDate, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PickupDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(m => m.PickupDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReturnDate, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ReturnDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(m => m.ReturnDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PickupLocation, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PickupLocation, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PickupLocation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ReturnLocation, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ReturnLocation, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ReturnLocation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Notes, new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", rows = 3 })
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Confirm booking</button>
+            }
+        </div>
+    </div>
+</div>

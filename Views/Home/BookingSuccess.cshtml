@@ -1,0 +1,33 @@
+@model CarRentalBookingApp.Models.Booking
+
+@{
+    ViewBag.Title = "Booking Confirmed";
+}
+
+<div class="success-message">
+    <h2>Booking confirmed</h2>
+    <p>Your rental has been successfully created.</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="card-title">Booking details</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Car:</strong> @Model.Car.Make @Model.Car.Model</p>
+                <p><strong>Customer:</strong> @Model.Customer.FirstName @Model.Customer.LastName</p>
+                <p><strong>Email:</strong> @Model.Customer.Email</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Pickup:</strong> @Model.PickupDate.ToShortDateString() from @Model.PickupLocation</p>
+                <p><strong>Return:</strong> @Model.ReturnDate.ToShortDateString() to @Model.ReturnLocation</p>
+                <p><strong>Total Price:</strong> $@Model.TotalPrice</p>
+                <p><strong>Status:</strong> @Model.Status</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    @Html.ActionLink("Back to Home", "Index", "Home", null, new { @class = "btn btn-primary" })
+</div>
